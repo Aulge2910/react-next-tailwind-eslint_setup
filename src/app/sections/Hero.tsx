@@ -5,7 +5,7 @@ const Content = Layout.Content;
 
 const Hero = () => {
   return (
-    <Content className="wrapper relative mx-auto w-[83.33vw]">
+    <Content className="wrapper relative mx-auto ">
       <div className="relative flex w-full p-[20px]">
         {/* 左半部分文字 */}
         <div className="flex w-full shrink-0 basis-1/2 flex-col">
@@ -114,10 +114,11 @@ const Hero = () => {
         <img
           src="/images/girl1.png"
           alt="kids"
-          
           className="relative h-48 w-48 rounded-[30%] object-cover shadow-lg"
         />
       </div>
+      <div className="h-[100vh] w-full bg-blue-200">1</div>
+      <div className="h-[100vh] w-full bg-orange-200">2</div>
     </Content>
   );
 };

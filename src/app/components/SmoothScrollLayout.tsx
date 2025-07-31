@@ -46,7 +46,10 @@ export default function SmoothScrollLayout({
             height: window.innerHeight,
           };
         },
-        pinType: scrollRef.current.style.transform ? 'transform' : 'fixed',
+        pinType:
+          getComputedStyle(scrollRef.current!).transform !== 'none'
+            ? 'transform'
+            : 'fixed',
       });
 
       ScrollTrigger.addEventListener('refresh', () =>
@@ -68,7 +71,7 @@ export default function SmoothScrollLayout({
     <div
       data-scroll-container
       ref={scrollRef}
-      className="min-h-screen overflow-hidden"
+      className="relative overflow-hidden min-h-screen"
     >
       {children}
     </div>
