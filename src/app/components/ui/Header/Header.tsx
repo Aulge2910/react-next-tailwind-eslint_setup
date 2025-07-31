@@ -21,20 +21,8 @@ const Header = () => {
   const closeDrawer = () => setDrawerVisible(false);
 
   return (
-    <Layout.Header
-      className={clsx(
-        'text-base font-semibold',
-        'flex w-full items-center justify-center',
-        'p-[20px] sm:py-[2.7604vw]',
-        'border border-black',
-      )}
-    >
-      <div
-        className={clsx(
-          'flex w-full items-center justify-between',
-          'xl:w-[78.6458vw]',
-        )}
-      >
+    <Layout.Header className="flex w-full items-center justify-center border border-black p-[20px] text-base font-semibold sm:py-[2.7604vw]">
+      <div className="flex w-full items-center justify-between xl:w-[83.33vw]">
         {/* Logo */}
         <Logo />
 
