@@ -1,5 +1,7 @@
+'use client';
+
 import { Roboto, Poppins } from 'next/font/google';
-import Hero from './sections/Hero';
+ 
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -13,9 +15,9 @@ const poppins = Poppins({
 
 export default function Home() {
   return (
-    <div className="min-h-[200vh] p-8">
-      <h1 className="text-4xl">欢迎来到 Locomotive Scroll 演示</h1>
-      <p>向下滚动试试平滑滚动效果！</p>
-    </div>
+    <>
+   // 动画区域
+ 
+    </>
   );
 }

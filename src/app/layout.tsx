@@ -36,7 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SmoothScrollLayout>
-          <main className="flex w-full items-center justify-center">
+          <main className="w-full">
             {children}
           </main>
         </SmoothScrollLayout>
