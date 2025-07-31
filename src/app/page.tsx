@@ -2,6 +2,7 @@
 
 import { Roboto, Poppins } from 'next/font/google';
  
+import Header from '@/app/components/ui/Header/Header';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -16,8 +17,7 @@ const poppins = Poppins({
 export default function Home() {
   return (
     <>
-   // 动画区域
- 
+      <Header/>
     </>
   );
 }

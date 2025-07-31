@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@arco-design/web-react": "^2.66.2",
     "@tailwindcss/cli": "^4.1.11",
+    "classnames": "^2.5.1",
     "gsap": "^3.13.0",
     "locomotive-scroll": "^4.1.4",
     "next": "15.4.4",

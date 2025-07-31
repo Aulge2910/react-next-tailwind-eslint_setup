@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+
+import '@arco-design/web-react/dist/css/arco.css';
 import './globals.css';
+
 
 import SmoothScrollLayout from '@/app/components/SmoothScrollLayout';
 
