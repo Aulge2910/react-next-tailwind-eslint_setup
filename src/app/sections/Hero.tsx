@@ -17,9 +17,6 @@ const Hero = () => {
 
   return (
     <Content className="wrapper relative mx-auto">
-      <h1 className="text-4xl font-bold text-blue-500">
-        Build awesome apps with <TypingEffect text="Aceternity." />
-      </h1>
       <div className="relative flex w-full p-[20px]">
         {/* 左半部分文字 */}
         <div className="flex w-full shrink-0 basis-1/2 flex-col">
@@ -30,8 +27,27 @@ const Hero = () => {
             commodi. Tempora, expedita quod.
           </span>
           <button></button>
-          <div>
-            <span></span>
+
+          <div className="relative flex h-[300px] w-[300px] items-center justify-center rounded-xl p-8">
+            {/* 黃色不規則背景 */}
+            <svg
+              viewBox="0 0 200 200"
+              className="absolute left-0 top-0 h-full w-full"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="#fce68a"
+                d="M45.6,-54.4C60.1,-46,69.7,-30.1,69.5,-15.7C69.3,-1.3,59.2,11.7,50.1,24.9C41,38,33,51.3,21.3,57.1C9.7,62.8,-6.7,61,-22.2,56.1C-37.7,51.1,-52.4,43.1,-58.7,30.1C-65,17,-62.9,-1,-55,-15.9C-47.2,-30.8,-33.8,-42.5,-19.3,-51.3C-4.8,-60.2,10.8,-66.3,25.7,-65.1C40.7,-63.9,55,-55.4,45.6,-54.4Z"
+                transform="translate(100 100)"
+              />
+            </svg>
+
+            {/* 照片 */}
+            <img
+              src="/images/girl1.png"
+              alt="kids"
+              className="relative h-48 w-48 rounded-[30%] object-cover shadow-lg"
+            />
           </div>
         </div>
 
@@ -108,27 +124,12 @@ const Hero = () => {
           </svg>
         </div>
       </div>
-      <div className="relative flex h-[300px] w-[300px] items-center justify-center rounded-xl p-8">
-        {/* 黃色不規則背景 */}
-        <svg
-          viewBox="0 0 200 200"
-          className="absolute left-0 top-0 h-full w-full"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="#fce68a"
-            d="M45.6,-54.4C60.1,-46,69.7,-30.1,69.5,-15.7C69.3,-1.3,59.2,11.7,50.1,24.9C41,38,33,51.3,21.3,57.1C9.7,62.8,-6.7,61,-22.2,56.1C-37.7,51.1,-52.4,43.1,-58.7,30.1C-65,17,-62.9,-1,-55,-15.9C-47.2,-30.8,-33.8,-42.5,-19.3,-51.3C-4.8,-60.2,10.8,-66.3,25.7,-65.1C40.7,-63.9,55,-55.4,45.6,-54.4Z"
-            transform="translate(100 100)"
-          />
-        </svg>
 
-        {/* 照片 */}
-        <img
-          src="/images/girl1.png"
-          alt="kids"
-          className="relative h-48 w-48 rounded-[30%] object-cover shadow-lg"
-        />
-      </div>
+      <h1 className="text-4xl font-bold text-blue-500">
+        Build awesome apps with <TypingEffect text="Aceternity." />
+      </h1>
+
+      
     </Content>
   );
 };

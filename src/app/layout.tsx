@@ -37,9 +37,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SmoothScrollLayout>
+        
           <main className="w-full">{children}</main>
-        </SmoothScrollLayout>
+      
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ import { Roboto, Poppins } from 'next/font/google';
  
 import Header from '@/app/components/ui/Header/Header';
 import Hero from '@/app/sections/Hero';
-import Feature from '@/app/sections/Feature';
+import SplitImage from '@/app/components/ImageSplit';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -19,8 +19,8 @@ const poppins = Poppins({
 export default function Home() {
   return (
     <>
-      <Header/>
-      <Hero/>
+  
+      <SplitImage/>
     </>
   );
 }
