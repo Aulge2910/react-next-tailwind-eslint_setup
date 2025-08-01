@@ -14,6 +14,7 @@ interface ImageSplitProps {
 }
 
 export default function ImageSplit({
+  
   totalImages = 3,
   spacingX = 25,
   imageSrcs = ['/images/food1.png', '/images/food2.png', '/images/food3.png'],
@@ -23,98 +24,86 @@ export default function ImageSplit({
   const sectionRef = useRef<HTMLDivElement>(null);
   const smootherRef = useRef<ScrollSmoother | null>(null);
 
-  useEffect(() => {
-    if (!wrapperRef.current || !contentRef.current || !sectionRef.current)
-      return;
-    if (totalImages % 2 === 0) {
-      console.warn('totalImages 必须是奇数');
-      return;
+useEffect(() => {
+  if (!wrapperRef.current || !contentRef.current || !sectionRef.current) return;
+
+  if (totalImages % 2 === 0) {
+    console.warn('totalImages 必须是奇数');
+    return;
+  }
+
+  if (imageSrcs.length < totalImages) {
+    console.warn('imageSrcs 数组长度必须大于等于 totalImages');
+    return;
+  }
+
+  smootherRef.current = ScrollSmoother.create({
+    wrapper: wrapperRef.current,
+    content: contentRef.current,
+    smooth: 1.2,
+    effects: true,
+    normalizeScroll: true,
+  });
+
+  const images = gsap.utils.toArray('.split-img') as HTMLElement[];
+  const middleIndex = Math.floor(totalImages / 2);
+
+  gsap.set(images, {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    xPercent: -50,
+    yPercent: -50,
+  });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: sectionRef.current,
+      scroller: wrapperRef.current,
+      start: 'top top',
+      end: '+=100%',
+      scrub: true,
+      pin: true,
+      anticipatePin: 1,
+      markers: true,
+      id: 'imageSplitAnimation',
+    },
+  });
+
+  images.forEach((img, i) => {
+    const offset = Math.abs(i - middleIndex);
+
+    let zIndex = 0;
+    if (i === middleIndex) {
+      zIndex = 10; // 中间最高
+    } else if (i === 0 || i === totalImages - 1) {
+      zIndex = 1; // 最左和最右最低
+    } else {
+      zIndex = 10 - offset;
+      if (zIndex <= 1) zIndex = 2;
     }
-    if (imageSrcs.length < totalImages) {
-      console.warn('imageSrcs 数组长度必须大于等于 totalImages');
-      return;
+    img.style.zIndex = zIndex.toString();
+
+    if (i === middleIndex) {
+      tl.to(img, { xPercent: -50 }, 0);
+    } else {
+      const direction = i < middleIndex ? -1 : 1;
+      const absOffset = offset;
+      const distance = Array.isArray(spacingX)
+        ? (spacingX[absOffset - 1] ?? spacingX[spacingX.length - 1])
+        : spacingX * absOffset;
+
+      tl.to(img, { xPercent: -50 + direction * distance }, 0);
     }
+  });
 
-    smootherRef.current = ScrollSmoother.create({
-      wrapper: wrapperRef.current,
-      content: contentRef.current,
-      smooth: 1.2,
-      effects: true,
-      normalizeScroll: true,
-    });
+  return () => {
+    tl.scrollTrigger?.kill();
+    smootherRef.current?.kill();
+    smootherRef.current = null;
+  };
+}, [totalImages, spacingX, imageSrcs]);
 
-    const images = gsap.utils.toArray('.split-img') as HTMLElement[];
-
-    gsap.set(images, {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      xPercent: -50,
-      yPercent: -50,
-    });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        scroller: wrapperRef.current,
-        start: 'top top',
-        end: '+=100%',
-        scrub: true,
-        pin: true,
-        anticipatePin: 1,
-        markers: true,
-        id: 'imageSplitAnimation',
-      },
-    });
-
-    const middleIndex = Math.floor(totalImages / 2);
-
-    // Normalize spacingX into array of spacings for offsets from center
-    // For example: spacingX = 25 => [25, 50, 75, ...]
-    // Or user can pass array like [25, 46, 68]
-    let spacingArray: number[] = [];
-
-    if (typeof spacingX === 'number') {
-      // create spacing array of length middleIndex
-      spacingArray = Array(middleIndex)
-        .fill(0)
-        .map((_, i) => spacingX * (i + 1));
-    } else if (Array.isArray(spacingX)) {
-      spacingArray = spacingX;
-      // Make sure spacingArray length matches middleIndex (optional)
-      if (spacingArray.length !== middleIndex) {
-        console.warn(
-          `spacingX array length (${spacingArray.length}) does not match half of totalImages (${middleIndex}).`,
-        );
-      }
-    }
-
-    images.forEach((img, i) => {
-      if (i === middleIndex) {
-        // center image stays centered
-        tl.to(img, { xPercent: -50 }, 0);
-      } else {
-        const offsetIndex = i - middleIndex;
-        const direction = offsetIndex < 0 ? -1 : 1;
-        const absOffset = Math.abs(offsetIndex);
-
-        // Use spacingArray for distance: index from center -1 (because 1st offset = spacingArray[0])
-        // If spacingArray length is less than needed, fallback to last spacing value
-        const distance =
-          spacingArray[absOffset - 1] !== undefined
-            ? spacingArray[absOffset - 1]
-            : spacingArray[spacingArray.length - 1];
-
-        tl.to(img, { xPercent: -50 + direction * distance }, 0);
-      }
-    });
-
-    return () => {
-      tl.scrollTrigger?.kill();
-      smootherRef.current?.kill();
-      smootherRef.current = null;
-    };
-  }, [totalImages, spacingX, imageSrcs]);
 
   return (
     <div
@@ -123,9 +112,7 @@ export default function ImageSplit({
       className="h-screen w-screen overflow-hidden"
     >
       <div ref={contentRef} id="smooth-content" className="min-h-screen">
-        <div className="section1 text-10xl flex h-screen w-screen items-center justify-center bg-amber-200">
-          screen1
-        </div>
+ 
 
         <div
           ref={sectionRef}
@@ -156,9 +143,7 @@ export default function ImageSplit({
           </div>
         </div>
 
-        <div className="section3 text-10xl flex h-screen w-screen items-center justify-center bg-amber-200">
-          screen3
-        </div>
+  
       </div>
     </div>
   );
