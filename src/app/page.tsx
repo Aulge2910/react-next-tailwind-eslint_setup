@@ -19,8 +19,17 @@ const poppins = Poppins({
 export default function Home() {
   return (
     <>
-  
-      <SplitImage/>
+      <SplitImage
+        totalImages={5}
+        spacingX={50}
+        imageSrcs={[
+          '/images/food1.png',
+          '/images/food1.png',
+          '/images/food1.png',
+          '/images/food1.png',
+          '/images/food1.png',
+        ]}
+      />
     </>
   );
 }

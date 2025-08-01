@@ -7,7 +7,17 @@ import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-export default function ImageSplit() {
+interface ImageSplitProps {
+  totalImages: number; // 奇数，图片总数
+  spacingX: number | number[]; // number or array of spacing
+  imageSrcs: string[]; // 图片地址数组，长度至少等于 totalImages
+}
+
+export default function ImageSplit({
+  totalImages = 3,
+  spacingX = 25,
+  imageSrcs = ['/images/food1.png', '/images/food2.png', '/images/food3.png'],
+}: ImageSplitProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -16,21 +26,33 @@ export default function ImageSplit() {
   useEffect(() => {
     if (!wrapperRef.current || !contentRef.current || !sectionRef.current)
       return;
+    if (totalImages % 2 === 0) {
+      console.warn('totalImages 必须是奇数');
+      return;
+    }
+    if (imageSrcs.length < totalImages) {
+      console.warn('imageSrcs 数组长度必须大于等于 totalImages');
+      return;
+    }
 
-    // 初始化 ScrollSmoother
     smootherRef.current = ScrollSmoother.create({
       wrapper: wrapperRef.current,
       content: contentRef.current,
       smooth: 1.2,
       effects: true,
-      normalizeScroll: true, // 额外平滑
+      normalizeScroll: true,
     });
 
-    // 选中图片元素
     const images = gsap.utils.toArray('.split-img') as HTMLElement[];
-    gsap.set(images, { xPercent: 0 });
 
-    // 创建动画时间线，注意 scroller 传入 smoother 的 wrapper
+    gsap.set(images, {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      xPercent: -50,
+      yPercent: -50,
+    });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -45,16 +67,54 @@ export default function ImageSplit() {
       },
     });
 
-    tl.to(images[0], { xPercent: -150 }, 0)
-      .to(images[1], { xPercent: 0 }, 0)
-      .to(images[2], { xPercent: 150 }, 0);
+    const middleIndex = Math.floor(totalImages / 2);
+
+    // Normalize spacingX into array of spacings for offsets from center
+    // For example: spacingX = 25 => [25, 50, 75, ...]
+    // Or user can pass array like [25, 46, 68]
+    let spacingArray: number[] = [];
+
+    if (typeof spacingX === 'number') {
+      // create spacing array of length middleIndex
+      spacingArray = Array(middleIndex)
+        .fill(0)
+        .map((_, i) => spacingX * (i + 1));
+    } else if (Array.isArray(spacingX)) {
+      spacingArray = spacingX;
+      // Make sure spacingArray length matches middleIndex (optional)
+      if (spacingArray.length !== middleIndex) {
+        console.warn(
+          `spacingX array length (${spacingArray.length}) does not match half of totalImages (${middleIndex}).`,
+        );
+      }
+    }
+
+    images.forEach((img, i) => {
+      if (i === middleIndex) {
+        // center image stays centered
+        tl.to(img, { xPercent: -50 }, 0);
+      } else {
+        const offsetIndex = i - middleIndex;
+        const direction = offsetIndex < 0 ? -1 : 1;
+        const absOffset = Math.abs(offsetIndex);
+
+        // Use spacingArray for distance: index from center -1 (because 1st offset = spacingArray[0])
+        // If spacingArray length is less than needed, fallback to last spacing value
+        const distance =
+          spacingArray[absOffset - 1] !== undefined
+            ? spacingArray[absOffset - 1]
+            : spacingArray[spacingArray.length - 1];
+
+        tl.to(img, { xPercent: -50 + direction * distance }, 0);
+      }
+    });
 
     return () => {
       tl.scrollTrigger?.kill();
       smootherRef.current?.kill();
       smootherRef.current = null;
     };
-  }, []);
+  }, [totalImages, spacingX, imageSrcs]);
 
   return (
     <div
@@ -71,33 +131,28 @@ export default function ImageSplit() {
           ref={sectionRef}
           className="section2 relative flex h-screen w-full overflow-hidden bg-cyan-500"
         >
-          {/* 图片容器：绝对居中 */}
-          <div className="absolute  left-1/2 top-1/2 h-[15vw] w-[15vw] -translate-x-1/2 -translate-y-1/2">
-            {/* images stacked on top of each other */}
-            <div className="split-img absolute inset-0">
-              <Image
-                src="/images/food1.png"
-                alt="food left"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="split-img absolute inset-0">
-              <Image
-                src="/images/food1.png"
-                alt="food center"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="split-img absolute inset-0">
-              <Image
-                src="/images/food1.png"
-                alt="food right"
-                fill
-                className="object-cover"
-              />
-            </div>
+          <div className="relative h-full w-full">
+            {[...Array(totalImages)].map((_, i) => (
+              <div
+                key={i}
+                className="split-img"
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  width: '15vw',
+                  height: '15vw',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <Image
+                  src={imageSrcs[i]}
+                  alt={`food ${i}`}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
