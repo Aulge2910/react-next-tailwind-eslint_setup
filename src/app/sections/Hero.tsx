@@ -1,16 +1,28 @@
+'use client';
+
 import { Layout } from '@arco-design/web-react';
 import Image from 'next/image';
+import { gsap } from 'gsap';
+import { useEffect, useRef } from 'react';
+import { TextPlugin } from 'gsap/TextPlugin';
+import { useGSAP } from '@gsap/react';
+import TypingEffect from '../components/TypingEffect'; 
+
+gsap.registerPlugin(TextPlugin, useGSAP);
 
 const Content = Layout.Content;
 
 const Hero = () => {
+ 
+
   return (
-    <Content className="wrapper relative mx-auto ">
+    <Content className="wrapper relative mx-auto">
+      <h1 className="text-4xl font-bold text-blue-500">
+        Build awesome apps with <TypingEffect text="Aceternity." />
+      </h1>
       <div className="relative flex w-full p-[20px]">
         {/* 左半部分文字 */}
         <div className="flex w-full shrink-0 basis-1/2 flex-col">
-          <span>THE BEST KINDERGARDEN</span>
-          <h1>JOIN OUR FRIENDLY BUBAKIDS FAMILY</h1>
           <span>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. In sequi,
             quibusdam ipsa voluptas placeat molestiae ex delectus veritatis,
@@ -117,8 +129,6 @@ const Hero = () => {
           className="relative h-48 w-48 rounded-[30%] object-cover shadow-lg"
         />
       </div>
-      <div className="h-[100vh] w-full bg-blue-200">1</div>
-      <div className="h-[100vh] w-full bg-orange-200">2</div>
     </Content>
   );
 };

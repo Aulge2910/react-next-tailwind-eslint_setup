@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import '@arco-design/web-react/dist/css/arco.css';
 import './globals.css';
 
-
 import SmoothScrollLayout from '@/app/components/SmoothScrollLayout';
 
 const geistSans = Geist({
@@ -39,9 +38,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SmoothScrollLayout>
-          <main className="w-full">
-            {children}
-          </main>
+          <main className="w-full">{children}</main>
         </SmoothScrollLayout>
       </body>
     </html>
