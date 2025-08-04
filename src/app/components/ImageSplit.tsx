@@ -16,7 +16,7 @@ interface ImageSplitProps {
 export default function ImageSplit({
   totalImages = 3,
   spacingX = 25,
-  imageSrcs = ['/images/food1.png', '/images/food2.png', '/images/food3.png'],
+  imageSrcs = ['/images/food1.png', '/images/food1.png', '/images/food1.png'],
 }: ImageSplitProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +52,6 @@ export default function ImageSplit({
         scrub: true,
         pin: true,
         anticipatePin: 1,
-        markers: true, // 開發用，正式可刪
         id: 'imageSplitAnimation',
       },
     });
