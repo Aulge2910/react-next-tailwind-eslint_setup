@@ -23,23 +23,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="keywords" content="myDemo" />
         <title>MyDemo</title>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        
+        {/* 這邊放 ScrollSmoother 容器 */}
+        <SmoothScrollLayout>
+          {/* main 這層一定要包裹 children，不然滾動範圍會怪 */}
           <main className="w-full">{children}</main>
-      
+        </SmoothScrollLayout>
       </body>
     </html>
   );

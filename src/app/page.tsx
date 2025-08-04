@@ -19,6 +19,7 @@ const poppins = Poppins({
 export default function Home() {
   return (
     <>
+  <Hero/>
       <SplitImage
         totalImages={5}
         spacingX={50}
@@ -29,7 +30,8 @@ export default function Home() {
           '/images/food1.png',
           '/images/food1.png',
         ]}
-      />
+      />  
+      <div className='h-screen bg-amber-500'>1111</div>
     </>
   );
 }

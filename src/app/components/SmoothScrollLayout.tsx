@@ -1,79 +1,42 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import 'locomotive-scroll/dist/locomotive-scroll.css';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
-gsap.registerPlugin(ScrollTrigger);
-
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 export default function SmoothScrollLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const locoScrollRef = useRef<any>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let LocomotiveScroll: any;
-    let isMounted = true;
+    if (!wrapperRef.current || !contentRef.current) return;
 
-    async function initLocomotive() {
-      LocomotiveScroll = (await import('locomotive-scroll')).default;
+    const smoother = ScrollSmoother.create({
+      wrapper: wrapperRef.current,
+      content: contentRef.current,
+      smooth: 1.5,
+      effects: true,
+      normalizeScroll: true,
+    });
 
-      if (!scrollRef.current || !isMounted) return;
-
-      locoScrollRef.current = new LocomotiveScroll({
-        el: scrollRef.current,
-        smooth: true,
-        lerp: 0.1,
-      });
-
-      locoScrollRef.current.on('scroll', ScrollTrigger.update);
-
-      ScrollTrigger.scrollerProxy(scrollRef.current, {
-        scrollTop(value) {
-          return arguments.length
-            ? locoScrollRef.current.scrollTo(value, 0, 0)
-            : locoScrollRef.current.scroll.instance.scroll.y;
-        },
-        getBoundingClientRect() {
-          return {
-            top: 0,
-            left: 0,
-            width: window.innerWidth,
-            height: window.innerHeight,
-          };
-        },
-        pinType:
-          getComputedStyle(scrollRef.current!).transform !== 'none'
-            ? 'transform'
-            : 'fixed',
-      });
-
-      ScrollTrigger.addEventListener('refresh', () =>
-        locoScrollRef.current.update(),
-      );
-      ScrollTrigger.refresh();
-    }
-
-    initLocomotive();
+    ScrollTrigger.refresh();
 
     return () => {
-      isMounted = false;
-      if (locoScrollRef.current) locoScrollRef.current.destroy();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      smoother.kill();
     };
   }, []);
 
   return (
-    <div
-      data-scroll-container
-      ref={scrollRef}
-      className="relative overflow-hidden min-h-screen"
-    >
-      {children}
+    <div ref={wrapperRef} id="smooth-wrapper">
+      <div ref={contentRef} id="smooth-content">
+        {children}
+      </div>
     </div>
   );
 }

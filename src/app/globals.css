@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -19,12 +19,6 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @theme inline {
   --font-size-10xl: 120px;
 }
@@ -39,4 +33,31 @@ body {
   font-size: 120px;
 }
 /* Typography */
+#smooth-wrapper {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 讓 ScrollSmoother 控制滾動 */
+}
  
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;  font-family: sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#smooth-wrapper {
+  height: 100vh; /* 一定要是視窗高度，確保 scroll 容器高度正確 */
+  overflow: hidden;
+}
+
+#smooth-content {
+  position: relative;
+  height: auto; /* 讓內容自然撐開 */
+}
