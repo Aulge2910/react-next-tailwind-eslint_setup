@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import '@arco-design/web-react/dist/css/arco.css';
 import './globals.css';
 
-import SmoothScrollLayout from '@/app/components/SmoothScrollLayout';
+import SmoothScrollLayout from '@/app/components/layouts/SmoothScrollLayout';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

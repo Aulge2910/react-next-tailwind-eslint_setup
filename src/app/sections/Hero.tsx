@@ -6,7 +6,7 @@ import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { useGSAP } from '@gsap/react';
-import TypingEffect from '../components/TypingEffect'; 
+import TypingEffect from '../components/animations/TypingEffect'; 
 
 gsap.registerPlugin(TextPlugin, useGSAP);
 

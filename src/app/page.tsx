@@ -4,7 +4,7 @@ import { Roboto, Poppins } from 'next/font/google';
  
 import Header from '@/app/components/ui/Header/Header';
 import Hero from '@/app/sections/Hero';
-import SplitImage from '@/app/components/ImageSplit';
+import SplitImage from '@/app/components/animations/ImageSplit';
 
 const roboto = Roboto({
   subsets: ['latin'],
