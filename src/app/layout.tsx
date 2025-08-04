@@ -5,6 +5,10 @@ import '@arco-design/web-react/dist/css/arco.css';
 import './globals.css';
 
 import SmoothScrollLayout from '@/app/components/layouts/SmoothScrollLayout';
+import Header from '@/app/components/ui/Header/Header';
+import Footer from '@/app/components/ui/Footer/Footer';
+ 
+import ArcoLayoutWrapper from '@/app/components/layouts/ArcoLayoutWrapper';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,10 +41,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* 這邊放 ScrollSmoother 容器 */}
         <SmoothScrollLayout>
-          {/* main 這層一定要包裹 children，不然滾動範圍會怪 */}
-          <main className="w-full">{children}</main>
+          <ArcoLayoutWrapper header={<Header />} footer={<Footer />}>
+            {children}
+          </ArcoLayoutWrapper>
         </SmoothScrollLayout>
       </body>
     </html>
